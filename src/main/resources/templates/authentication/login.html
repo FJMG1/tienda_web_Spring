@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout.html}">
+
+<div th:fragment="mainContent">
+
+    <section class="py-5">
+        <div class="container" style="max-width: 450px;">
+
+            <h2 class="fw-bold text-center text-primary mb-4">Iniciar sesión</h2>
+
+            <!-- Mensaje de error (Spring Security lo enviará como ?error) -->
+            <div th:if="${param.error}" class="alert alert-danger text-center">
+                Usuario o contraseña incorrectos.
+            </div>
+
+            <!-- Mensaje de logout -->
+            <div th:if="${param.logout}" class="alert alert-success text-center">
+                Has cerrado sesión correctamente.
+            </div>
+
+            <form th:action="@{/login}" method="post" class="card shadow-sm p-4">
+
+                <div class="mb-3">
+                    <label class="form-label">Usuario</label>
+                    <input type="tex" name="username" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+
+                <button class="btn btn-primary w-100 mt-3">Entrar</button>
+
+				<p class="text-center mt-3 mb-0">
+				    ¿No tienes cuenta?
+				    <a th:href="@{/auth/register}">Regístrate aquí</a>
+				</p>
+
+            </form>
+
+        </div>
+    </section>
+
+</div>
+
+</html>

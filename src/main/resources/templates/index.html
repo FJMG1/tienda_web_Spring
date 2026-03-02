@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout.html}">
+
+<div th:fragment="mainContent">
+
+    <section class="py-4">
+        <div class="container">
+
+            <h2 class="fw-bold text-primary mb-4">Catálogo de Productos</h2>
+
+            <!-- GRID DE PRODUCTOS -->
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
+
+                <div class="col" th:each="product : ${products}">
+                    <div class="card h-100 shadow-sm">
+
+                        <!-- Imagen -->
+                        <img th:src="@{${product.image}}" 
+                             class="card-img-top" 
+                             alt="Imagen del producto"
+                             style="height: 160px; object-fit: cover;">
+
+                        <div class="card-body text-center">
+
+                            <!-- Nombre -->
+                            <h5 class="card-title fw-bold" th:text="${product.name}"></h5>
+
+                            <!-- Precio -->
+                            <p class="text-success fw-semibold mb-1">
+                                <span th:text="${product.price}"></span> €
+                            </p>
+
+                            <!-- Stock -->
+                            <p class="text-muted small">
+                                Stock: <span th:text="${product.stock}"></span>
+                            </p>
+
+                        </div>
+
+						<div class="card-footer bg-white text-center">
+
+						    <!-- Si el usuario es COMPRADOR -->
+						    <div sec:authorize="hasRole('COMPRADOR')">
+
+						        <form th:action="@{'/cart/add/' + ${product.id}}" method="get" class="d-flex justify-content-center align-items-center gap-2">
+
+						            <!-- Input cantidad -->
+						            <input type="number"
+						                   name="quantity"
+						                   min="1"
+						                   th:max="${product.stock}"
+						                   value="1"
+						                   class="form-control form-control-sm"
+						                   style="width: 70px;">
+
+						            <!-- Botón añadir -->
+						            <button type="submit" class="btn btn-primary btn-sm">
+						                Añadir al carrito
+						            </button>
+
+						        </form>
+						    </div>
+
+						    <!-- Si NO está logueado -->
+						    <div sec:authorize="isAnonymous()">
+						        <a href="/auth/login" class="btn btn-secondary btn-sm">
+						            Inicia sesión para comprar
+						        </a>
+						    </div>
+
+						</div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- PAGINACIÓN (placeholder para cuando la implementes) -->
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled"><a class="page-link">Anterior</a></li>
+                    <li class="page-item active"><a class="page-link">1</a></li>
+                    <li class="page-item"><a class="page-link">2</a></li>
+                    <li class="page-item"><a class="page-link">3</a></li>
+                    <li class="page-item"><a class="page-link">Siguiente</a></li>
+                </ul>
+            </nav>
+
+        </div>
+    </section>
+
+</div>
+
+</html>

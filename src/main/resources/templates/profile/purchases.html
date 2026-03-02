@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout.html}">
+
+<div th:fragment="mainContent">
+
+    <h2 class="fw-bold text-primary mb-4">Mis compras</h2>
+
+    <div class="card shadow-sm p-4">
+
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                    <th class="text-end"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="sale : ${purchases}">
+                    <td th:text="${sale.id}"></td>
+
+                    <!-- FECHA (con protección y usando #temporals) -->
+                    <td>
+                        <span th:if="${sale.dateSale != null}"
+                              th:text="${#temporals.format(sale.dateSale, 'dd/MM/yyyy HH:mm')}"></span>
+
+                        <span th:unless="${sale.dateSale != null}">
+                            Sin fecha
+                        </span>
+                    </td>
+
+                    <td class="text-end" th:text="${sale.total} + ' €'"></td>
+
+                    <!-- ESTADO (usando th:switch para evitar ternarias) -->
+					<td>
+					    <span th:switch="${sale.status}">
+
+					        <span th:case="${T(com.tienda.model.Sale.Status).PAGADA}"
+					              class="badge bg-success"
+					              th:text="${sale.status}">
+					        </span>
+
+					        <span th:case="${T(com.tienda.model.Sale.Status).PENDIENTE}"
+					              class="badge bg-warning text-dark"
+					              th:text="${sale.status}">
+					        </span>
+
+					        <span th:case="*"
+					              class="badge bg-secondary"
+					              th:text="${sale.status}">
+					        </span>
+
+					    </span>
+					</td>
+
+                    <td class="text-end">
+                        <a th:href="@{'/profile/purchases/' + ${sale.id}}"
+                           class="btn btn-sm btn-primary">
+                            Ver detalle
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${purchases.size() == 0}" class="text-center py-3">
+            <p class="text-muted mb-0">Todavía no has realizado ninguna compra.</p>
+        </div>
+
+    </div>
+
+</div>
+
+</html>

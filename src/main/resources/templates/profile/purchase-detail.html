@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout.html}">
+
+<div th:fragment="mainContent">
+
+    <h2 class="fw-bold text-primary mb-4">
+        Detalle de compra #<span th:text="${sale.id}"></span>
+    </h2>
+
+    <p><strong>Fecha:</strong>
+        <span th:if="${sale.dateSale != null}"
+              th:text="${#temporals.format(sale.dateSale, 'dd/MM/yyyy HH:mm')}"></span>
+
+        <span th:unless="${sale.dateSale != null}">
+            Sin fecha
+        </span>
+    </p>
+
+    <p><strong>Estado:</strong> <span th:text="${sale.status}"></span></p>
+    <p><strong>Total:</strong> <span th:text="${sale.total} + ' €'"></span></p>
+
+    <table class="table table-bordered mt-4">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio unitario</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="d : ${details}">
+                <td th:text="${d.product.name}"></td>
+                <td th:text="${d.quantity}"></td>
+                <td th:text="${d.unitPrice} + ' €'"></td>
+                <td th:text="${d.unitPrice * d.quantity} + ' €'"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="/profile/purchases" class="btn btn-secondary mt-3">Volver</a>
+
+</div>
+
+</html>

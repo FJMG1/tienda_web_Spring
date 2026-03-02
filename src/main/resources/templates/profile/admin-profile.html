@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout.html}">
+
+<div th:fragment="mainContent">
+
+    <h2 class="fw-bold text-primary mb-4">Perfil de administrador</h2>
+
+    <div class="card shadow-sm p-4 mb-4" style="max-width: 500px;">
+        <p><strong>Nombre:</strong> <span th:text="${user.name}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+        <p><strong>Rol:</strong> Administrador</p>
+
+		<a class="btn btn-primary w-100 mt-3" th:href="@{/admin/users}">
+		    Ir al panel de administración
+		</a>
+
+        <a class="btn btn-secondary w-100 mt-2" th:href="@{/profile/edit}">
+            Cambiar contraseña
+        </a>
+    </div>
+
+</div>
+
+</html>

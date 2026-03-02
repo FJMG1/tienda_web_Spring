@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout.html}">
+
+<div th:fragment="mainContent">
+
+    <h2 class="fw-bold text-primary mb-4">
+        Compra #<span th:text="${sale.id}"></span>
+    </h2>
+
+    <div class="card shadow-sm p-4 mb-4">
+
+        <p><strong>Usuario:</strong> <span th:text="${sale.user.name}"></span></p>
+        <p><strong>Fecha:</strong> <span th:text="${sale.dateSale}"></span></p>
+        <p><strong>Estado:</strong> <span th:text="${sale.status}"></span></p>
+        <p><strong>Total:</strong> <span th:text="${sale.total} + ' €'"></span></p>
+
+    </div>
+
+    <h4 class="fw-bold mb-3">Productos comprados</h4>
+
+    <table class="table table-bordered shadow-sm">
+        <thead class="table-light">
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio unitario</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="d : ${details}">
+                <td th:text="${d.product.name}"></td>
+                <td th:text="${d.quantity}"></td>
+                <td th:text="${d.unitPrice} + ' €'"></td>
+                <td th:text="${d.unitPrice * d.quantity} + ' €'"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4 class="mt-4 fw-bold">Cambiar estado</h4>
+
+    <form th:action="@{'/admin/sales/' + ${sale.id} + '/status'}"
+          method="post"
+          class="card shadow-sm p-3 mb-4"
+          style="max-width: 350px;">
+
+        <select name="status" class="form-select">
+            <option th:each="st : ${T(com.tienda.model.Sale.Status).values()}"
+                    th:value="${st}"
+                    th:text="${st}"
+                    th:selected="${sale.status != null and st.name() == sale.status.name()}">
+            </option>
+        </select>
+
+        <button class="btn btn-primary mt-3">Actualizar estado</button>
+    </form>
+
+    <div th:if="${param.updated}">
+        <div class="alert alert-success">Estado actualizado correctamente.</div>
+    </div>
+
+    <a href="/admin/sales" class="btn btn-secondary mt-3">Volver</a>
+
+</div>
+
+</html>
